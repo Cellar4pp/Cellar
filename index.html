@@ -1572,6 +1572,7 @@ body {
 }
 @keyframes ptrSpin { to { transform: rotate(360deg); } }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
 <div id="app">
@@ -2516,6 +2517,84 @@ body {
 <script>
 const DROP_CONFIG = { number: 12 };
 
+// ─── SUPABASE ─────────────────────────────────────────────────
+const SUPABASE_URL = 'https://xkzpgdlszwfzuplsilak.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhrenBnZGxzendmenVwbHNpbGFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDY2MDAsImV4cCI6MjA5MjcyMjYwMH0.OznUleAhmqPkOuBpWKcB4-udWh_9DV-sjA9FOW4qEV4';
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Anonieme user ID: persistent per apparaat via localStorage
+function getUserId() {
+  let uid = localStorage.getItem('cellar_uid');
+  if (!uid) {
+    uid = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+      (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
+    localStorage.setItem('cellar_uid', uid);
+  }
+  return uid;
+}
+const USER_ID = getUserId();
+
+// ─── DATABASE INITIALISATIE ───────────────────────────────────
+async function initFromDB() {
+  try {
+    // 1. Check of gebruiker al ingeschreven is voor huidige drop
+    const { data: entry } = await db
+      .from('draft_entries')
+      .select('id')
+      .eq('user_id', USER_ID)
+      .eq('drop_number', DROP_CONFIG.number)
+      .maybeSingle();
+
+    if (entry && heroSeconds > 0) {
+      state.enrolled = true;
+      enrollStateEl.style.display = 'none';
+      enrolledStateEl.style.display = 'block';
+      updateEnrolledBannerCountdown();
+      enrolledCountdownInterval = setInterval(updateEnrolledBannerCountdown, 1000);
+    }
+
+    // 2. Haal echte deelnemerstelling op
+    const { count } = await db
+      .from('draft_entries')
+      .select('*', { count: 'exact', head: true })
+      .eq('drop_number', DROP_CONFIG.number);
+
+    if (count !== null && heroSeconds > 0) {
+      participantCount = Math.max(count, 1);
+      if (participantNumberEl) {
+        participantNumberEl.textContent = t('participants_number').replace('{n}', participantCount);
+      }
+      // Stop de gesimuleerde teller nu we echte data hebben
+      clearInterval(participantInterval);
+    }
+
+    // 3. Realtime: update teller live bij nieuwe inschrijvingen
+    db.channel('draft_live')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'draft_entries',
+        filter: `drop_number=eq.${DROP_CONFIG.number}`
+      }, async () => {
+        if (heroSeconds <= 0) return;
+        const { count: newCount } = await db
+          .from('draft_entries')
+          .select('*', { count: 'exact', head: true })
+          .eq('drop_number', DROP_CONFIG.number);
+        if (newCount !== null) {
+          participantCount = newCount;
+          if (participantNumberEl) {
+            participantNumberEl.textContent = t('participants_number').replace('{n}', participantCount);
+          }
+        }
+      })
+      .subscribe();
+
+  } catch (err) {
+    console.warn('DB init mislukt, app werkt offline:', err.message);
+  }
+}
+
 // Reusable bottle SVG snippets
 const BOTTLE_SVG_CARD_RED = `<svg width="34" height="86" viewBox="0 0 34 86" fill="none" aria-hidden="true"><rect x="10" y="0" width="14" height="11" rx="2.5" fill="#8B3347"/><rect x="10" y="9" width="14" height="4" fill="#6B2737"/><rect x="11" y="13" width="12" height="19" fill="#2a0e14"/><path d="M11 32 C7 39 5 46 5 54 L29 54 C29 46 27 39 23 32 Z" fill="#2a0e14"/><rect x="5" y="53" width="24" height="33" rx="1.5" fill="#2a0e14"/><rect x="8" y="59" width="18" height="20" rx="1" fill="#EDE9E3" opacity="0.09"/><rect x="10" y="63" width="14" height="1.5" rx="0.75" fill="#EDE9E3" opacity="0.26"/><rect x="10" y="67" width="14" height="1.5" rx="0.75" fill="#EDE9E3" opacity="0.18"/><rect x="10" y="73" width="14" height="1.5" rx="0.75" fill="#EDE9E3" opacity="0.18"/><rect x="25" y="36" width="2" height="44" rx="1" fill="white" opacity="0.045"/></svg>`;
 const BOTTLE_SVG_CARD_WHITE = `<svg width="34" height="86" viewBox="0 0 34 86" fill="none" aria-hidden="true"><rect x="10" y="0" width="14" height="11" rx="2.5" fill="#8a7030"/><rect x="10" y="9" width="14" height="4" fill="#6a5018"/><rect x="11" y="13" width="12" height="19" fill="#4a3810"/><path d="M11 32 C7 39 5 46 5 54 L29 54 C29 46 27 39 23 32 Z" fill="#4a3810"/><rect x="5" y="53" width="24" height="33" rx="1.5" fill="#4a3810"/><rect x="8" y="59" width="18" height="20" rx="1" fill="#EDE9E3" opacity="0.12"/><rect x="10" y="63" width="14" height="1.5" rx="0.75" fill="#EDE9E3" opacity="0.3"/><rect x="10" y="67" width="14" height="1.5" rx="0.75" fill="#EDE9E3" opacity="0.22"/><rect x="10" y="73" width="14" height="1.5" rx="0.75" fill="#EDE9E3" opacity="0.22"/><rect x="25" y="36" width="2" height="44" rx="1" fill="white" opacity="0.06"/></svg>`;
@@ -3290,24 +3369,57 @@ function updateEnrolledBannerCountdown() {
   el.textContent = (currentLang === 'en' ? 'Closes in ' : 'Sluit over ') + parts;
 }
 
-function enrollDraft() {
+async function enrollDraft() {
   if (state.enrolled) return;
-  state.enrolled = true;
-  enrollStateEl.style.display = 'none';
-  enrolledStateEl.style.display = 'block';
-  updateEnrolledBannerCountdown();
-  enrolledCountdownInterval = setInterval(updateEnrolledBannerCountdown, 1000);
-  showToast(t('toast_enrolled') + DROP_CONFIG.number);
+
+  // Disable knop tijdens DB call
+  const btn = enrollStateEl.querySelector('.btn-primary');
+  if (btn) { btn.disabled = true; btn.textContent = '...'; }
+
+  try {
+    const { error } = await db
+      .from('draft_entries')
+      .insert({ user_id: USER_ID, drop_number: DROP_CONFIG.number });
+
+    if (error) throw error;
+
+    state.enrolled = true;
+    enrollStateEl.style.display = 'none';
+    enrolledStateEl.style.display = 'block';
+    updateEnrolledBannerCountdown();
+    enrolledCountdownInterval = setInterval(updateEnrolledBannerCountdown, 1000);
+    showToast(t('toast_enrolled') + DROP_CONFIG.number);
+
+  } catch (err) {
+    console.warn('Inschrijven mislukt:', err.message);
+    showToast(currentLang === 'en' ? 'Something went wrong. Try again.' : 'Er ging iets mis. Probeer opnieuw.');
+    if (btn) { btn.disabled = false; btn.textContent = t('enroll_btn'); }
+  }
 }
 
-function withdrawDraft() {
+async function withdrawDraft() {
   if (!state.enrolled) return;
-  state.enrolled = false;
-  clearInterval(enrolledCountdownInterval);
-  enrolledCountdownInterval = null;
-  enrolledStateEl.style.display = 'none';
-  enrollStateEl.style.display = 'block';
-  showToast(t('toast_withdrawn'));
+
+  try {
+    const { error } = await db
+      .from('draft_entries')
+      .delete()
+      .eq('user_id', USER_ID)
+      .eq('drop_number', DROP_CONFIG.number);
+
+    if (error) throw error;
+
+    state.enrolled = false;
+    clearInterval(enrolledCountdownInterval);
+    enrolledCountdownInterval = null;
+    enrolledStateEl.style.display = 'none';
+    enrollStateEl.style.display = 'block';
+    showToast(t('toast_withdrawn'));
+
+  } catch (err) {
+    console.warn('Uitschrijven mislukt:', err.message);
+    showToast(currentLang === 'en' ? 'Something went wrong. Try again.' : 'Er ging iets mis. Probeer opnieuw.');
+  }
 }
 
 // DEMO TRIGGERS
@@ -3843,6 +3955,9 @@ function showToast(msg) {
   clearTimeout(toastTimeout);
   toastTimeout = setTimeout(() => toastEl.classList.remove('show'), 2800);
 }
+
+// Start database verbinding
+initFromDB();
 
 // KEYBOARD: Escape closes open sheets and overlays
 // PULL TO REFRESH
