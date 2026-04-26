@@ -543,83 +543,6 @@ body {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* LOSS OVERLAY */
-.loss-screen-overlay {
-  display: none;
-  position: fixed; top: 0; left: 50%; bottom: 0;
-  width: 100%; max-width: 430px; transform: translateX(-50%);
-  background: var(--sandstone); z-index: 200;
-  flex-direction: column; overflow-y: auto; -webkit-overflow-scrolling: touch;
-}
-.loss-screen-overlay.active { display: flex; }
-
-.loss-top { background: var(--dark); padding: 60px 24px 32px; text-align: center; }
-
-.loss-icon {
-  width: 56px; height: 56px; border-radius: 50%;
-  background: rgba(255,255,255,0.06);
-  display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 20px;
-}
-.loss-icon svg { stroke: rgba(240,237,232,0.5); fill: none; stroke-width: 1.5; }
-
-.loss-title { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--accent-light); margin-bottom: 8px; }
-.loss-subtitle { font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(240,237,232,0.5); line-height: 1.6; }
-
-.loss-next-drop { padding: 24px 20px; }
-
-.next-drop-label {
-  font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 600;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--burgundy); margin-bottom: 14px;
-}
-
-.next-drop-card { background: var(--dark); border-radius: 10px; overflow: hidden; }
-
-.next-drop-image {
-  height: 120px;
-  background-color: #3a1520;
-  background-image: linear-gradient(135deg, #3a1520 0%, #6B2737 100%);
-  display: flex; align-items: center; justify-content: center;
-}
-
-.next-drop-body { padding: 16px; }
-.next-drop-wine { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--accent-light); margin-bottom: 4px; }
-.next-drop-producer { font-family: 'DM Sans', sans-serif; font-size: 12px; color: rgba(240,237,232,0.5); margin-bottom: 10px; }
-.next-drop-desc { font-family: 'DM Sans', sans-serif; font-size: 13px; color: rgba(240,237,232,0.7); line-height: 1.6; margin-bottom: 12px; }
-
-.next-drop-date-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: rgba(107,39,55,0.3); border: 1px solid rgba(107,39,55,0.5);
-  border-radius: 4px; padding: 5px 10px;
-  font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; color: #d4849b;
-}
-
-.open-cellar-nudge {
-  margin: 0 20px 16px;
-  background: var(--card-bg); border-radius: 8px; padding: 16px;
-  display: flex; align-items: center; gap: 14px;
-}
-.nudge-text h4 { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: var(--dark); margin-bottom: 2px; margin-top: 0; }
-.nudge-text p { font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--body-text); }
-
-.nudge-btn {
-  flex-shrink: 0; background: var(--burgundy); color: white; border: none;
-  border-radius: 4px; padding: 8px 14px;
-  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
-  cursor: pointer; -webkit-tap-highlight-color: transparent;
-  transition: opacity 0.15s;
-}
-.nudge-btn:active { opacity: 0.75; }
-
-.loss-close-btn {
-  margin: 0 20px calc(24px + var(--safe-bottom)); background: transparent;
-  color: var(--body-text); border: 1.5px solid var(--divider);
-  border-radius: 6px; padding: 16px; width: calc(100% - 40px);
-  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
 /* CHECKOUT OVERLAY */
 .checkout-screen-overlay {
   display: none;
@@ -1754,20 +1677,20 @@ body {
   position: fixed; top: 0; left: 50%; bottom: 0;
   width: 100%; max-width: 430px; transform: translateX(-50%);
   background: var(--dark); z-index: 200;
-  flex-direction: column; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  flex-direction: column;
 }
 .loss-screen-overlay.active { display: flex; }
 
 .loss-top {
-  padding: 64px 28px 36px; text-align: center; flex-shrink: 0;
+  padding: 64px 28px 32px; text-align: center; flex-shrink: 0;
 }
 .loss-icon {
   width: 52px; height: 52px; border-radius: 50%;
-  border: 1.5px solid rgba(240,237,232,0.15);
+  border: 1.5px solid rgba(240,237,232,0.12);
   display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 24px;
+  margin: 0 auto 22px;
 }
-.loss-icon svg { stroke: rgba(240,237,232,0.45); fill: none; stroke-width: 1.5; }
+.loss-icon svg { stroke: rgba(240,237,232,0.4); fill: none; stroke-width: 1.5; }
 .loss-title {
   font-family: 'Playfair Display', serif;
   font-size: 26px; font-weight: 600;
@@ -1775,68 +1698,73 @@ body {
 }
 .loss-subtitle {
   font-family: 'DM Sans', sans-serif; font-size: 14px;
-  color: rgba(240,237,232,0.45); line-height: 1.7;
+  color: rgba(240,237,232,0.4); line-height: 1.7;
 }
-
 .loss-divider {
-  height: 1px; background: rgba(240,237,232,0.08); margin: 0 28px;
+  height: 1px; background: rgba(240,237,232,0.07); margin: 0 28px; flex-shrink: 0;
 }
-
-.loss-next-drop { padding: 28px 28px 0; flex-shrink: 0; }
+.loss-next-drop {
+  padding: 24px 28px 0; flex: 1; overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
 .next-drop-label {
   font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 700;
   letter-spacing: 0.16em; text-transform: uppercase;
-  color: rgba(201,169,110,0.7); margin-bottom: 14px;
+  color: rgba(201,169,110,0.65); margin-bottom: 14px;
 }
 .next-drop-card {
   background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(240,237,232,0.1);
+  border: 1px solid rgba(240,237,232,0.09);
   border-radius: 10px; overflow: hidden;
 }
 .next-drop-image {
-  height: 100px;
+  height: 90px;
   background: linear-gradient(135deg, #2a0e14 0%, #3a1520 100%);
   display: flex; align-items: center; justify-content: center;
 }
-.next-drop-body { padding: 16px; }
+.next-drop-body { padding: 14px 16px; }
 .next-drop-wine {
   font-family: 'Playfair Display', serif; font-size: 16px;
   color: var(--accent-light); margin-bottom: 3px;
 }
 .next-drop-producer {
   font-family: 'DM Sans', sans-serif; font-size: 12px;
-  color: rgba(240,237,232,0.4); margin-bottom: 10px;
+  color: rgba(240,237,232,0.35); margin-bottom: 10px;
 }
 .next-drop-desc {
   font-family: 'DM Sans', sans-serif; font-size: 13px;
-  color: rgba(240,237,232,0.55); line-height: 1.65; margin-bottom: 12px;
+  color: rgba(240,237,232,0.5); line-height: 1.65; margin-bottom: 12px;
 }
 .next-drop-date-badge {
   display: inline-flex; align-items: center; gap: 6px;
-  background: rgba(107,39,55,0.25); border: 1px solid rgba(107,39,55,0.4);
+  background: rgba(107,39,55,0.22); border: 1px solid rgba(107,39,55,0.38);
   border-radius: 4px; padding: 5px 10px;
   font-family: 'DM Sans', sans-serif; font-size: 11px;
-  font-weight: 600; color: rgba(212,132,155,0.9);
+  font-weight: 600; color: rgba(212,132,155,0.85);
 }
-
-.loss-actions { padding: 24px 28px calc(28px + var(--safe-bottom)); flex-shrink: 0; }
+.loss-actions {
+  padding: 20px 20px calc(28px + var(--safe-bottom));
+  flex-shrink: 0;
+}
 .loss-cellar-btn {
-  width: 100%; background: var(--burgundy); color: white; border: none;
-  border-radius: 8px; padding: 16px;
+  display: block; width: 100%; box-sizing: border-box;
+  background: var(--burgundy); color: white;
+  border: 1.5px solid var(--burgundy);
+  border-radius: 8px; padding: 16px; text-align: center;
   font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600;
   cursor: pointer; margin-bottom: 10px;
   -webkit-tap-highlight-color: transparent; touch-action: manipulation;
   transition: opacity 0.15s;
 }
-.loss-cellar-btn:active { opacity: 0.85; }
+.loss-cellar-btn:active { opacity: 0.82; }
 .loss-close-btn {
-  width: 100%; background: transparent; color: rgba(240,237,232,0.4);
-  border: 1px solid rgba(240,237,232,0.12);
-  border-radius: 8px; padding: 15px;
+  display: block; width: 100%; box-sizing: border-box;
+  background: transparent; color: rgba(240,237,232,0.38);
+  border: 1.5px solid rgba(240,237,232,0.12);
+  border-radius: 8px; padding: 16px; text-align: center;
   font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent; touch-action: manipulation;
-  transition: opacity 0.15s;
 }
 .loss-close-btn:active { opacity: 0.7; }
 .open-cellar-nudge { display: none; }
@@ -2156,10 +2084,10 @@ body {
   <!-- PROFIEL -->
   <div id="screen-profiel" class="screen">
     <div class="profile-header">
-      <div class="profile-avatar">L</div>
+      <div class="profile-avatar" id="profile-avatar">?</div>
       <div>
-        <div class="profile-name">Lucas van den Berg</div>
-        <div class="profile-email">lucas@cellarapp.nl</div>
+        <div class="profile-name" id="profile-name-el"></div>
+        <div class="profile-email" id="profile-email-el"></div>
         <div class="profile-unverified-badge" id="profile-unverified-badge"><svg width="10" height="10" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Verificatie vereist</div>
       </div>
     </div>
@@ -2519,7 +2447,7 @@ body {
     </div>
     <div class="section-label" id="checkout-address-label">Afleveradres</div>
     <div class="address-card">
-      <div class="address-text">Lucas van den Berg<br>Hogeschoollaan 1<br>4818 CR Breda</div>
+      <div class="address-text" id="checkout-address-text">Uw afleveradres</div>
       <span class="address-change" onclick="openSheet('sheet-address')" role="button" tabindex="0">Wijzigen</span>
     </div>
   </div>
@@ -2826,11 +2754,11 @@ body {
     </div>
     <div class="sheet-body">
       <span class="sheet-field-label" id="lbl-first-name">Voornaam</span>
-      <input type="text" class="sheet-input" value="Lucas" id="inp-first-name" aria-label="Voornaam">
+      <input type="text" class="sheet-input" placeholder="Voornaam" id="inp-first-name" aria-label="Voornaam">
       <span class="sheet-field-label" id="lbl-last-name">Achternaam</span>
-      <input type="text" class="sheet-input" value="van den Berg" id="inp-last-name" aria-label="Achternaam">
+      <input type="text" class="sheet-input" placeholder="Achternaam" id="inp-last-name" aria-label="Achternaam">
       <span class="sheet-field-label" id="lbl-email">E-mailadres</span>
-      <input type="email" class="sheet-input" value="lucas@cellarapp.nl" id="inp-email" aria-label="E-mailadres">
+      <input type="email" class="sheet-input" placeholder="uw@email.nl" id="inp-email" aria-label="E-mailadres" readonly style="opacity:0.6;cursor:default;">
       <span class="sheet-field-label" id="lbl-phone">Telefoonnummer</span>
       <input type="tel" class="sheet-input" placeholder="+31 6 00000000" id="inp-phone" aria-label="Telefoonnummer">
       <button type="button" class="sheet-save-btn" onclick="saveSheet('sheet-profile', 'toast_profile_saved')">Opslaan</button>
@@ -2999,27 +2927,54 @@ async function saveProfile() {
 }
 
 async function loadProfile() {
-  if (!currentUser) return;
+  if (!currentUser) return false;
   const { data } = await db.from('profiles').select('*').eq('id', currentUser.id).maybeSingle();
+
+  // Always set email from auth
+  const emailEl = document.getElementById('profile-email-el');
+  if (emailEl) emailEl.textContent = currentUser.email;
+  const inpEmail = document.getElementById('inp-email');
+  if (inpEmail) inpEmail.value = currentUser.email;
+
   if (data) {
-    // Profile exists, update UI
-    const profileNameEl = document.querySelector('.profile-name');
-    if (profileNameEl) profileNameEl.textContent = (data.first_name || '') + ' ' + (data.last_name || '');
-    const profileEmailEl = document.querySelector('.profile-email');
-    if (profileEmailEl) profileEmailEl.textContent = currentUser.email;
-    // Pre-fill profile sheet inputs
-    const fnEl = document.getElementById('inp-first-name'); if (fnEl && data.first_name) fnEl.value = data.first_name;
-    const lnEl = document.getElementById('inp-last-name');  if (lnEl && data.last_name)  lnEl.value = data.last_name;
-    const emEl = document.getElementById('inp-email');      if (emEl) emEl.value = currentUser.email;
-    const phEl = document.getElementById('inp-phone');      if (phEl && data.phone) phEl.value = data.phone;
-    return true; // profile complete
+    const fullName = ((data.first_name || '') + ' ' + (data.last_name || '')).trim();
+    const nameEl = document.getElementById('profile-name-el');
+    if (nameEl) nameEl.textContent = fullName || currentUser.email;
+    // Also update legacy selector used elsewhere
+    const legacyName = document.querySelector('.profile-name');
+    if (legacyName) legacyName.textContent = fullName || currentUser.email;
+
+    // Avatar initial
+    const avatarEl = document.getElementById('profile-avatar');
+    if (avatarEl) avatarEl.textContent = (data.first_name || currentUser.email || '?')[0].toUpperCase();
+
+    // Fill sheet inputs
+    const fnEl = document.getElementById('inp-first-name'); if (fnEl) fnEl.value = data.first_name || '';
+    const lnEl = document.getElementById('inp-last-name');  if (lnEl) lnEl.value = data.last_name || '';
+    const phEl = document.getElementById('inp-phone');      if (phEl) phEl.value = data.phone || '';
+
+    // Update checkout address display
+    const checkoutAddr = document.getElementById('checkout-address-text');
+    if (checkoutAddr) {
+      const name = ((data.first_name || '') + ' ' + (data.last_name || '')).trim();
+      checkoutAddr.textContent = name || currentUser.email;
+    }
+    return true;
+  } else {
+    // No profile yet, set email as name
+    const nameEl = document.getElementById('profile-name-el');
+    if (nameEl) nameEl.textContent = currentUser.email;
+    const avatarEl = document.getElementById('profile-avatar');
+    if (avatarEl) avatarEl.textContent = (currentUser.email || '?')[0].toUpperCase();
+    // Clear sheet inputs
+    const fnEl = document.getElementById('inp-first-name'); if (fnEl) fnEl.value = '';
+    const lnEl = document.getElementById('inp-last-name');  if (lnEl) lnEl.value = '';
+    const phEl = document.getElementById('inp-phone');      if (phEl) phEl.value = '';
+    return false;
   }
-  return false; // no profile yet
 }
 const ADMIN_EMAILS = [
   'lucasbrouwer@me.com',
-  'lucas@cellarapp.nl',
-  'lucas.vandenberg@buas.nl',
 ];
 
 function applyAdminMode(email) {
@@ -3671,9 +3626,8 @@ function applyLanguage(lang) {
   document.querySelector('.loss-title').textContent = tr.not_selected;
   const lossSub = document.getElementById('loss-subtitle'); if (lossSub) lossSub.innerHTML = tr.loss_subtitle;
   document.querySelector('.loss-close-btn').textContent = tr.back_to_drops;
-  document.querySelector('.nudge-btn').textContent = tr.view;
-  document.querySelector('.nudge-text h4').textContent = tr.open_cellar_available;
-  document.querySelector('.nudge-text p').textContent = tr.nudge_bottles;
+  const lossCellarBtn = document.querySelector('.loss-cellar-btn');
+  if (lossCellarBtn) lossCellarBtn.textContent = currentLang === 'en' ? 'View Open Cellar' : 'Bekijk Open Cellar';
   lossOverlayEl.setAttribute('aria-label', tr.aria_loss_overlay);
   checkoutOverlayEl.setAttribute('aria-label', tr.aria_checkout_overlay);
   // Loss next-drop card
@@ -4435,7 +4389,10 @@ function completeAgeVerification() {
 }
 
 // SHEET MANAGEMENT
-function openSheet(id) {
+async function openSheet(id) {
+  if (id === 'sheet-profile' && currentUser) {
+    await loadProfile();
+  }
   document.getElementById(id).classList.add('active');
 }
 function closeSheet(id, event) {
